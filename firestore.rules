@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // User documents: only authenticated owner can read/write
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Workout subcollection
+      match /workouts/{workoutId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Nutrition logs subcollection
+      match /nutrition_logs/{logId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Global foods collection: public read, admin-only write
+    match /foods/{foodId} {
+      allow read: if true;
+      allow write: if false; // Seed via Cloud Functions or admin SDK only
+    }
+
+    // Audit collection: write only via server-side (Cloud Functions)
+    match /audit/{auditId} {
+      allow read, write: if false;
+    }
+  }
+}
