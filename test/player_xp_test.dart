@@ -3,27 +3,38 @@ import 'package:agion/domain/models/player.dart';
 import 'package:agion/core/constants.dart';
 
 void main() {
-  group('XpConfig', () {
-    test('xpForLevel returns 100 for level 1', () {
-      expect(XpConfig.xpForLevel(1), 100);
+  group('XpConfig — Long-term progression', () {
+    test('xpForLevel returns 500 for level 1', () {
+      expect(XpConfig.xpForLevel(1), 500);
     });
 
-    test('xpForLevel returns 150 for level 2', () {
-      expect(XpConfig.xpForLevel(2), 150);
+    test('xpForLevel returns 615 for level 2', () {
+      // 500 + 100*(1) + 15*(1)^2 = 500 + 100 + 15 = 615
+      expect(XpConfig.xpForLevel(2), 615);
     });
 
-    test('xpForLevel returns 200 for level 3', () {
-      expect(XpConfig.xpForLevel(3), 200);
-    });
-
-    test('xpForLevel follows linear formula baseXP + (n-1)*50', () {
-      for (int n = 1; n <= 20; n++) {
-        expect(XpConfig.xpForLevel(n), 100 + (n - 1) * 50);
+    test('xpForLevel follows quadratic formula', () {
+      for (int n = 1; n <= 10; n++) {
+        final expected = 500 + 100 * (n - 1) + (15 * (n - 1) * (n - 1)).round();
+        expect(XpConfig.xpForLevel(n), expected);
       }
+    });
+
+    test('xpForLevel grows significantly at higher levels', () {
+      // L10: 500 + 900 + 15*81 = 500+900+1215 = 2615
+      expect(XpConfig.xpForLevel(10), 2615);
+      // Must be a real grind at high levels
+      expect(XpConfig.xpForLevel(50) > 30000, true);
+    });
+
+    test('Level 1→2 requires ~10 workouts', () {
+      final xpNeeded = XpConfig.xpForLevel(1);
+      final workoutsNeeded = (xpNeeded / XpConfig.workoutXp).ceil();
+      expect(workoutsNeeded, 10);
     });
   });
 
-  group('Player.addXp', () {
+  group('Player.addXp — new formula', () {
     late Player player;
 
     setUp(() {
@@ -37,83 +48,86 @@ void main() {
     });
 
     test('adding XP below threshold does not level up', () {
-      final updated = player.addXp(50);
+      final updated = player.addXp(200);
       expect(updated.level, 1);
-      expect(updated.xp, 50);
+      expect(updated.xp, 200);
     });
 
     test('adding XP at exact threshold levels up', () {
-      final updated = player.addXp(100); // xpForLevel(1) = 100
+      final updated = player.addXp(500); // xpForLevel(1) = 500
       expect(updated.level, 2);
       expect(updated.xp, 0);
     });
 
     test('adding XP above threshold levels up with overflow', () {
-      final updated = player.addXp(120); // 100 needed, 20 overflow
+      final updated = player.addXp(530); // 500 needed, 30 overflow
       expect(updated.level, 2);
-      expect(updated.xp, 20);
+      expect(updated.xp, 30);
     });
 
     test('multi-level up with large XP gain', () {
-      // Level 1 needs 100, Level 2 needs 150 → total 250 for 2 level-ups
-      final updated = player.addXp(260);
+      // Level 1 needs 500, Level 2 needs 615 → total 1115 for 2 level-ups
+      final updated = player.addXp(1125);
       expect(updated.level, 3);
-      expect(updated.xp, 10); // 260 - 100 - 150 = 10
+      expect(updated.xp, 10); // 1125 - 500 - 615 = 10
     });
 
     test('xpProgress returns correct fraction', () {
-      final updated = player.addXp(50);
-      // Level 1 needs 100 XP, so 50/100 = 0.5
+      final updated = player.addXp(250);
+      // Level 1 needs 500 XP, so 250/500 = 0.5
       expect(updated.xpProgress, 0.5);
     });
 
     test('xpToNextLevel is correct at level 1', () {
-      expect(player.xpToNextLevel, 100);
+      expect(player.xpToNextLevel, 500);
     });
 
     test('xpToNextLevel increases after level up', () {
-      final updated = player.addXp(100); // level up to 2
-      expect(updated.xpToNextLevel, 150);
+      final updated = player.addXp(500); // level up to 2
+      expect(updated.xpToNextLevel, 615);
     });
   });
 
-  group('RankConfig', () {
-    test('rank is E for level 1-4', () {
+  group('RankConfig — long-term thresholds', () {
+    test('rank is E for level 1-7', () {
       expect(RankConfig.rankForLevel(1), 'E');
-      expect(RankConfig.rankForLevel(4), 'E');
+      expect(RankConfig.rankForLevel(7), 'E');
     });
 
-    test('rank is D for level 5-9', () {
-      expect(RankConfig.rankForLevel(5), 'D');
-      expect(RankConfig.rankForLevel(9), 'D');
+    test('rank is D for level 8-19', () {
+      expect(RankConfig.rankForLevel(8), 'D');
+      expect(RankConfig.rankForLevel(19), 'D');
     });
 
-    test('rank is C for level 10-19', () {
-      expect(RankConfig.rankForLevel(10), 'C');
-      expect(RankConfig.rankForLevel(19), 'C');
+    test('rank is C for level 20-34', () {
+      expect(RankConfig.rankForLevel(20), 'C');
+      expect(RankConfig.rankForLevel(34), 'C');
     });
 
-    test('rank is B for level 20-34', () {
-      expect(RankConfig.rankForLevel(20), 'B');
-      expect(RankConfig.rankForLevel(34), 'B');
+    test('rank is B for level 35-54', () {
+      expect(RankConfig.rankForLevel(35), 'B');
+      expect(RankConfig.rankForLevel(54), 'B');
     });
 
-    test('rank is A for level 35-49', () {
-      expect(RankConfig.rankForLevel(35), 'A');
-      expect(RankConfig.rankForLevel(49), 'A');
+    test('rank is A for level 55-74', () {
+      expect(RankConfig.rankForLevel(55), 'A');
+      expect(RankConfig.rankForLevel(74), 'A');
     });
 
-    test('rank is S for level 50+', () {
-      expect(RankConfig.rankForLevel(50), 'S');
+    test('rank is S for level 75+', () {
+      expect(RankConfig.rankForLevel(75), 'S');
       expect(RankConfig.rankForLevel(100), 'S');
     });
 
-    test('Player.addXp updates rank at D threshold', () {
+    test('Player.addXp updates rank at D threshold (level 8)', () {
       var p = Player.newPlayer(uid: 'test');
-      // Accumulate enough XP to reach level 5
-      // L1: 100, L2: 150, L3: 200, L4: 250 → total 700
-      p = p.addXp(700);
-      expect(p.level, 5);
+      // Sum of xpForLevel(1..7) to reach level 8
+      int totalXp = 0;
+      for (int i = 1; i <= 7; i++) {
+        totalXp += XpConfig.xpForLevel(i);
+      }
+      p = p.addXp(totalXp);
+      expect(p.level, 8);
       expect(p.rank, 'D');
     });
   });
@@ -146,9 +160,14 @@ void main() {
       expect(p.title, 'Awakened');
     });
 
-    test('title updates to Apprentice at D-rank', () {
+    test('title updates to Apprentice at D-rank (level 8)', () {
       var p = Player.newPlayer(uid: 'test');
-      p = p.addXp(700); // reach level 5 → D rank
+      int totalXp = 0;
+      for (int i = 1; i <= 7; i++) {
+        totalXp += XpConfig.xpForLevel(i);
+      }
+      p = p.addXp(totalXp);
+      expect(p.rank, 'D');
       expect(p.title, 'Apprentice');
     });
   });

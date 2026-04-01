@@ -1,0 +1,24 @@
+﻿Analyzing lib...
+
+  error - presentation\screens\focus_screen.dart:27:27 - The function 'StateProvider' isn't defined. Try importing the library that defines 'StateProvider', correcting the name to the name of an existing function, or defining a function named 'StateProvider'. - undefined_function
+warning - app.dart:2:8 - Unused import: 'package:flutter_animate/flutter_animate.dart'. Try removing the import directive. - unused_import
+warning - presentation\screens\home_screen.dart:2:8 - Unused import: 'package:flutter_animate/flutter_animate.dart'. Try removing the import directive. - unused_import
+   info - app.dart:96:30 - Missing type annotation. Try adding a type annotation. - strict_top_level_inference
+   info - presentation\screens\focus_screen.dart:47:7 - The private field _customMinutes could be 'final'. Try making the field 'final'. - prefer_final_fields
+   info - presentation\screens\focus_screen.dart:277:20 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\screens\main_shell.dart:177:22 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\screens\main_shell.dart:177:26 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\screens\main_shell.dart:178:40 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\screens\splash_screen.dart:92:26 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\screens\splash_screen.dart:102:28 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\screens\splash_screen.dart:125:28 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\screens\splash_screen.dart:186:32 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\screens\stats_screen.dart:112:33 - Unnecessary use of string interpolation. Try replacing the string literal with the variable name. - unnecessary_string_interpolations
+   info - presentation\screens\stats_screen.dart:130:26 - Missing type annotation. Try adding a type annotation. - strict_top_level_inference
+   info - presentation\screens\stats_screen.dart:186:32 - Missing type annotation. Try adding a type annotation. - strict_top_level_inference
+   info - presentation\screens\stats_screen.dart:299:29 - Missing type annotation. Try adding a type annotation. - strict_top_level_inference
+   info - presentation\screens\stats_screen.dart:368:24 - Missing type annotation. Try adding a type annotation. - strict_top_level_inference
+   info - presentation\widgets\level_up_cinematic.dart:126:26 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - presentation\widgets\level_up_cinematic.dart:139:26 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+
+20 issues found.

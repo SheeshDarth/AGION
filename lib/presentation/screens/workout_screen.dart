@@ -5,6 +5,7 @@ import '../../domain/models/workout.dart';
 import '../../features/workouts/workout_state.dart';
 import '../widgets/glass_card.dart';
 import '../widgets/system_toast.dart';
+import '../widgets/xp_gain_overlay.dart';
 
 class WorkoutScreen extends ConsumerStatefulWidget {
   const WorkoutScreen({super.key});
@@ -843,8 +844,12 @@ class _WorkoutEditorScreenState extends ConsumerState<_WorkoutEditorScreen> {
     ref.read(workoutListProvider.notifier).saveWorkout(finalWorkout);
     ref.read(activeWorkoutProvider.notifier).clear();
 
+    // Celebration animations
+    WorkoutCompleteAnimation.show(context);
+    XpGainOverlay.show(context, XpConfig.workoutXp);
+
     Navigator.pop(context);
-    SystemToast.show(context, 'Workout saved! +50 XP ⚔️');
+    SystemToast.show(context, 'Workout saved! +${XpConfig.workoutXp} XP ⚔️');
   }
 
   static const _setHeaderStyle = TextStyle(

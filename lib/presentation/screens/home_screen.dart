@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants.dart';
+import '../../core/audio_service.dart';
+import '../../core/ai_guide_voice.dart';
 import '../../domain/models/player.dart';
 import '../../features/player/player_state.dart';
+import '../../features/coach/ai_coach_service.dart';
+import '../../features/coach/daily_quotes.dart';
+import '../../features/profile/fitness_profile_state.dart';
 import '../widgets/xp_ring_widget.dart';
 import '../widgets/quick_action_button.dart';
 import '../widgets/rank_badge_widget.dart';
 import '../widgets/glass_card.dart';
 import '../widgets/system_toast.dart';
+import '../widgets/xp_gain_overlay.dart';
+import '../widgets/level_up_cinematic.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +27,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with TickerProviderStateMixin {
   int _previousLevel = 1;
+  String _previousRank = 'E';
 
   @override
   void initState() {
@@ -37,11 +46,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
     // Detect level-up
     if (player.level > _previousLevel && _previousLevel > 0) {
+      final isRankUp = player.rank != _previousRank;
+      final prevRank = _previousRank;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showLevelUpEffect(player.level, player.rank);
+        _showLevelUpEffect(player.level, player.rank,
+            isRankUp: isRankUp, previousRank: prevRank);
       });
     }
     _previousLevel = player.level;
+    _previousRank = player.rank;
 
     return Scaffold(
       backgroundColor: AgionColors.backgroundDeep,
@@ -90,8 +103,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                     const SizedBox(height: AgionSpacing.xl),
 
-                    // System message
-                    _buildSystemMessage(),
+                    // System AI coach tip
+                    _buildAiCoachTip(player),
+
+                    const SizedBox(height: AgionSpacing.md),
+
+                    // Daily Quote
+                    _buildDailyQuote(),
 
                     const SizedBox(height: AgionSpacing.lg),
 
@@ -186,15 +204,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     );
   }
 
-  // ─── SYSTEM MESSAGE ──────────────────────────────────────────────────
+  // ─── AI COACH TIP ──────────────────────────────────────────────────
 
-  Widget _buildSystemMessage() {
+  Widget _buildAiCoachTip(Player player) {
+    final profile = ref.watch(fitnessProfileProvider);
+    final tip = AiCoachService.getTip(
+      fitnessLevel: profile.fitnessLevel,
+      currentArcTheme: '',
+      streak: player.streak,
+      rank: player.rank,
+      workoutsToday: 0,
+    );
+
     return GlassCard(
       padding: const EdgeInsets.symmetric(
         horizontal: AgionSpacing.md,
         vertical: AgionSpacing.sm,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ShaderMask(
             shaderCallback: (bounds) =>
@@ -211,14 +239,87 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             ),
           ),
           const SizedBox(width: AgionSpacing.sm),
-          const Expanded(
+          Expanded(
             child: Text(
-              'Complete a workout to gain +50 XP',
-              style: TextStyle(
+              tip,
+              style: const TextStyle(
                 fontFamily: 'Rajdhani',
-                fontSize: 14,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: AgionColors.mutedText,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─── DAILY QUOTE ──────────────────────────────────────────────────
+
+  Widget _buildDailyQuote() {
+    final quote = DailyQuotes.ofTheDay();
+
+    return GlassCard(
+      showGlow: true,
+      padding: const EdgeInsets.all(AgionSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('💭', style: TextStyle(fontSize: 16)),
+              const SizedBox(width: AgionSpacing.sm),
+              const Text(
+                'DAILY INSIGHT',
+                style: TextStyle(
+                  fontFamily: 'Orbitron',
+                  fontSize: 9,
+                  fontWeight: FontWeight.w700,
+                  color: AgionColors.neonCyan,
+                  letterSpacing: 1,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AgionSpacing.sm),
+          Text(
+            quote.text,
+            style: const TextStyle(
+              fontFamily: 'Rajdhani',
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: AgionColors.white,
+              fontStyle: FontStyle.italic,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '— ${quote.author}',
+            style: TextStyle(
+              fontFamily: 'Rajdhani',
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AgionColors.neonCyan.withValues(alpha: 0.7),
+            ),
+          ),
+          const SizedBox(height: AgionSpacing.sm),
+          Container(
+            padding: const EdgeInsets.all(AgionSpacing.sm),
+            decoration: BoxDecoration(
+              color: AgionColors.white.withValues(alpha: 0.03),
+              borderRadius: AgionRadius.smallBR,
+            ),
+            child: Text(
+              quote.meaning,
+              style: const TextStyle(
+                fontFamily: 'Rajdhani',
+                fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: AgionColors.mutedText,
+                height: 1.4,
               ),
             ),
           ),
@@ -252,14 +353,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   void _onQuickAction(QuickAction action) {
     ref.read(playerProvider.notifier).awardXp(action);
+    AudioService.instance.playXpGain();
+    AiGuideVoice.instance.announceXpGain(action.xpReward);
+    XpGainOverlay.show(context, action.xpReward);
     SystemToast.show(
       context,
       '${action.label} complete! +${action.xpReward} XP',
     );
   }
 
-  void _showLevelUpEffect(int level, String rank) {
-    SystemToast.show(context, 'LEVEL UP! You are now LV $level ($rank-Rank)');
+  void _showLevelUpEffect(int level, String rank,
+      {bool isRankUp = false, String? previousRank}) {
+    LevelUpCinematic.show(
+      context,
+      newLevel: level,
+      rank: rank,
+      isRankUp: isRankUp,
+      previousRank: previousRank,
+    );
   }
 
   void _showPlayerDetails(Player player) {

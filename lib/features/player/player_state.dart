@@ -92,6 +92,18 @@ class PlayerNotifier extends Notifier<Player> {
     _persist();
   }
 
+  /// Merge cloud data into local state (used after sign-in pull).
+  void mergeFromCloud(Player cloudPlayer) {
+    state = state.copyWith(
+      level: cloudPlayer.level,
+      xp: cloudPlayer.xp,
+      rank: cloudPlayer.rank,
+      title: cloudPlayer.title,
+      streak: cloudPlayer.streak,
+    );
+    _persist();
+  }
+
   Future<void> _persist() async {
     final repo = ref.read(playerRepositoryProvider);
     await repo.savePlayer(state);

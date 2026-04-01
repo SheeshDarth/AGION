@@ -1,0 +1,9 @@
+
+> * Exception is:
+  java.lang.IllegalArgumentException: 25
+  	at org.jetbrains.kotlin.com.intellij.util.lang.J
+avaVersion.parse(JavaVersion.java:307)
+  	at org.jetbrains.kotlin.com.intellij.util.lang.J
+avaVersion.current(JavaVersion.java:176)
+
+

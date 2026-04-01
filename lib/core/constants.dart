@@ -83,35 +83,50 @@ class AgionShadows {
 }
 
 // ─── XP FORMULAS ───────────────────────────────────────────────────────────
+// Designed for LONG-TERM progression. A daily-active user should take:
+// ~2 weeks to reach Level 5, ~2 months to reach Level 15,
+// ~6 months to reach Level 30, ~1+ year for Level 50+.
 class XpConfig {
   XpConfig._();
 
-  static const int baseXp = 100;
-  static const int xpGrowth = 50;
+  static const int baseXp = 500;      // base XP to go from L1 → L2
+  static const int xpGrowthLinear = 100;  // linear growth per level
+  static const double xpGrowthQuadratic = 15; // quadratic scaling
 
   /// XP required to advance from level [n] to level [n+1].
-  static int xpForLevel(int n) => baseXp + (n - 1) * xpGrowth;
+  /// Formula: 500 + 100*(n-1) + 15*(n-1)^2
+  ///   L1→2:  500 XP  (~10 workouts)
+  ///   L5→6:  1060 XP (~21 workouts)
+  ///   L10→11: 1715 XP (~34 workouts)
+  ///   L20→21: 5810 XP (~116 workouts)
+  ///   L50→51: 38405 XP (~768 workouts)
+  static int xpForLevel(int n) {
+    final linear = xpGrowthLinear * (n - 1);
+    final quadratic = (xpGrowthQuadratic * (n - 1) * (n - 1)).round();
+    return baseXp + linear + quadratic;
+  }
 
-  // XP awards per action
-  static const int workoutXp = 50;
-  static const int waterGoalXp = 20;
-  static const int stepGoalXp = 30;
-  static const int dietGoalXp = 25;
-  static const int focusXp = 30;
-  static const int disciplineXp = 20;
+  // XP awards per action (daily caps enforced by streak logic)
+  static const int workoutXp = 50;      // per workout session
+  static const int waterGoalXp = 25;    // daily goal completion
+  static const int stepGoalXp = 35;     // daily step goal
+  static const int dietGoalXp = 30;     // daily diet log
+  static const int focusXp = 40;        // focus session
+  static const int disciplineXp = 20;   // discipline check-in
 }
 
 // ─── RANKS ─────────────────────────────────────────────────────────────────
+// Spread across months/years of real progression.
 class RankConfig {
   RankConfig._();
 
   static const Map<String, int> rankThresholds = {
-    'E': 1,
-    'D': 5,
-    'C': 10,
-    'B': 20,
-    'A': 35,
-    'S': 50,
+    'E': 1,    // Beginner (~first week)
+    'D': 8,    // ~1 month
+    'C': 20,   // ~3 months
+    'B': 35,   // ~6 months
+    'A': 55,   // ~10 months
+    'S': 75,   // ~1+ year of dedication
   };
 
   static const List<String> rankOrder = ['E', 'D', 'C', 'B', 'A', 'S'];

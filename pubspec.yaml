@@ -16,9 +16,31 @@ dependencies:
   # Local persistence
   hive: any
   hive_flutter: any
+  shared_preferences: any
 
-  # Animations
+  # Firebase
+  firebase_core: any
+  firebase_auth: any
+  cloud_firestore: any
+  google_sign_in: any
+
+  # Network
+  connectivity_plus: any
+
+  # Animations (flutter_animate = Google Stitch-compatible animation layer)
+  flutter_animate: any
+  lottie: any
   rive: any
+
+  # Charts
+  fl_chart: any
+
+  # Audio
+  audioplayers: any
+  flutter_tts: any
+
+  # Notifications
+  flutter_local_notifications: any
 
   # Fonts
   google_fonts: any
@@ -44,3 +66,5 @@ flutter:
     - assets/foods/
     - assets/rive/
     - assets/lottie/
+    - assets/audio/
+    - assets/animations/
