@@ -52,7 +52,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
                 child: Row(
                   children: [
                     GestureDetector(onTap: () => context.pop(),
-                      child: Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
+                      child: const Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
                     const SizedBox(width: 12),
                     SLText('◈ ANALYTICS', style: SLType.headline(size: 18)),
                   ],
@@ -124,7 +124,7 @@ class _OverviewTab extends StatelessWidget {
               const SizedBox(height: 12),
               LinearProgressIndicator(
                 value: xpNeeded > 0 ? xpIn / xpNeeded : 0,
-                backgroundColor: SLColors.textDim.withOpacity(0.3),
+                backgroundColor: SLColors.textDim.withValues(alpha: 0.3),
                 valueColor: const AlwaysStoppedAnimation<Color>(SLColors.glowCore),
                 minHeight: 6,
               ),
@@ -186,8 +186,8 @@ class _CombatTab extends StatelessWidget {
                 height: 160,
                 child: BarChart(BarChartData(
                   barGroups: bars,
-                  gridData: FlGridData(show: false),
-                  titlesData: FlTitlesData(show: false),
+                  gridData: const FlGridData(show: false),
+                  titlesData: const FlTitlesData(show: false),
                   borderData: FlBorderData(show: false),
                   backgroundColor: Colors.transparent,
                 )),
@@ -247,7 +247,7 @@ class _StatsTab extends StatelessWidget {
                   borderRadius: BorderRadius.circular(2),
                   child: LinearProgressIndicator(
                     value: (s.$2 / 9999).clamp(0.0, 1.0),
-                    backgroundColor: SLColors.textDim.withOpacity(0.2),
+                    backgroundColor: SLColors.textDim.withValues(alpha: 0.2),
                     valueColor: AlwaysStoppedAnimation<Color>(s.$3),
                     minHeight: 8,
                   ),

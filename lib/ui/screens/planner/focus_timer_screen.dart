@@ -111,7 +111,7 @@ class _FocusTimerScreenState extends ConsumerState<FocusTimerScreen>
                 child: Row(
                   children: [
                     GestureDetector(onTap: () => context.pop(),
-                      child: Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
+                      child: const Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
                     const Spacer(),
                     SLText(_isFocus ? 'FOCUS' : 'BREAK',
                         style: SLType.sysLabel(size: 12, color: accentColor)),
@@ -185,13 +185,13 @@ class _TimerRingPainter extends CustomPainter {
     // Track
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius),
       -math.pi / 2, 2 * math.pi, false,
-      Paint()..color = SLColors.textDim.withOpacity(0.2)..style = PaintingStyle.stroke..strokeWidth = 4);
+      Paint()..color = SLColors.textDim.withValues(alpha: 0.2)..style = PaintingStyle.stroke..strokeWidth = 4);
     // Progress
     if (progress > 0) {
       canvas.drawArc(Rect.fromCircle(center: center, radius: radius),
         -math.pi / 2, progress * 2 * math.pi, false,
         Paint()..color = color..style = PaintingStyle.stroke..strokeWidth = 4..strokeCap = StrokeCap.round
-          ..maskFilter = MaskFilter.blur(BlurStyle.outer, 6));
+          ..maskFilter = const MaskFilter.blur(BlurStyle.outer, 6));
     }
   }
 

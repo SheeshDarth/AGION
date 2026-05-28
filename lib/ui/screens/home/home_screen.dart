@@ -264,22 +264,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           GestureDetector(
             onTap: () => context.push('/planner'),
-            child: Icon(Icons.calendar_today_outlined, color: SLColors.textMid, size: 20),
+            child: const Icon(Icons.calendar_today_outlined, color: SLColors.textMid, size: 20),
           ),
           const SizedBox(width: 12),
           GestureDetector(
             onTap: () => context.push('/analytics'),
-            child: Icon(Icons.bar_chart, color: SLColors.textMid, size: 20),
+            child: const Icon(Icons.bar_chart, color: SLColors.textMid, size: 20),
           ),
           const SizedBox(width: 12),
           GestureDetector(
             onTap: () => context.push('/profile'),
-            child: Icon(Icons.person_outline, color: SLColors.textMid, size: 20),
+            child: const Icon(Icons.person_outline, color: SLColors.textMid, size: 20),
           ),
           const SizedBox(width: 12),
           GestureDetector(
             onTap: () => context.push('/settings'),
-            child: Icon(Icons.settings_outlined, color: SLColors.textMid, size: 20),
+            child: const Icon(Icons.settings_outlined, color: SLColors.textMid, size: 20),
           ),
         ],
       ),

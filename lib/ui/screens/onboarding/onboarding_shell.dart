@@ -34,7 +34,7 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
   String _activity = 'moderate';
   final Set<String> _goals = {};
 
-  static const _goals_list = [
+  static const _goalsList = [
     'PHYSICAL DOMINANCE',
     'BODY RECOMPOSITION',
     'ENDURANCE',
@@ -139,7 +139,7 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
                     onNext: _next,
                   ),
                   _PageGoals(
-                    goals: _goals, allGoals: _goals_list,
+                    goals: _goals, allGoals: _goalsList,
                     onToggle: (g) => setState(() => _goals.contains(g) ? _goals.remove(g) : _goals.add(g)),
                     onNext: _next,
                   ),
@@ -196,7 +196,7 @@ class _PageNameState extends State<_PageName> {
             style: SLType.headline(size: 24, color: SLColors.textBright),
             textAlign: TextAlign.center,
             maxLength: 20,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'HUNTER',
               counterText: '',
             ),

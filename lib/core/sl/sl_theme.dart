@@ -23,15 +23,15 @@ ThemeData buildSLTheme() {
       fillColor: SLColors.glassWhite,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.zero,
-        borderSide: BorderSide(color: SLColors.glowDim.withOpacity(0.4)),
+        borderSide: BorderSide(color: SLColors.glowDim.withValues(alpha: 0.4)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.zero,
-        borderSide: BorderSide(color: SLColors.glowDim.withOpacity(0.3)),
+        borderSide: BorderSide(color: SLColors.glowDim.withValues(alpha: 0.3)),
       ),
-      focusedBorder: OutlineInputBorder(
+      focusedBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.zero,
-        borderSide: const BorderSide(color: SLColors.glowCore, width: 1.5),
+        borderSide: BorderSide(color: SLColors.glowCore, width: 1.5),
       ),
       hintStyle: SLType.body(color: SLColors.textGhost),
       labelStyle: SLType.sysLabel(),

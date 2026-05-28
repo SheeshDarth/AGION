@@ -44,14 +44,14 @@ class _DiamondPainter extends CustomPainter {
       ..lineTo(0, size.height / 2)
       ..close();
 
-    canvas.drawPath(path, Paint()..color = color.withOpacity(0.08));
+    canvas.drawPath(path, Paint()..color = color.withValues(alpha: 0.08));
     canvas.drawPath(path, Paint()
-      ..color = color.withOpacity(0.6)
+      ..color = color.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5
-      ..maskFilter = MaskFilter.blur(BlurStyle.outer, 4));
+      ..maskFilter = const MaskFilter.blur(BlurStyle.outer, 4));
     canvas.drawPath(path, Paint()
-      ..color = color.withOpacity(0.6)
+      ..color = color.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0);
   }

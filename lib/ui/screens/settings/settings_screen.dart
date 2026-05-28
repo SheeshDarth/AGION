@@ -103,7 +103,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     children: [
                       GestureDetector(
                         onTap: () => context.pop(),
-                        child: Icon(Icons.arrow_back, color: SLColors.textMid, size: 20),
+                        child: const Icon(Icons.arrow_back, color: SLColors.textMid, size: 20),
                       ),
                       const SizedBox(width: 12),
                       SLText('◈ SYSTEM SETTINGS', style: SLType.headline(size: 18)),
@@ -118,7 +118,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 _settingsTile(
                   title: player.name.toUpperCase(),
                   subtitle: 'Level ${_level(player.totalXP)} · ${player.totalXP} Total XP',
-                  leading: Icon(Icons.person_outline, color: SLColors.glowCore, size: 20),
+                  leading: const Icon(Icons.person_outline, color: SLColors.glowCore, size: 20),
                 ),
 
               // ── Notifications ─────────────────────────────────
@@ -135,13 +135,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               _settingsTile(
                 title: 'Privacy Policy',
                 subtitle: 'How AGION handles your data',
-                leading: Icon(Icons.privacy_tip_outlined, color: SLColors.textMid, size: 20),
+                leading: const Icon(Icons.privacy_tip_outlined, color: SLColors.textMid, size: 20),
                 onTap: () => _showPrivacyPolicy(),
               ),
               _settingsTile(
                 title: 'All Data Stored Locally',
                 subtitle: 'Your data never leaves your device (except AI queries)',
-                leading: Icon(Icons.lock_outline, color: SLColors.success, size: 20),
+                leading: const Icon(Icons.lock_outline, color: SLColors.success, size: 20),
               ),
 
               // ── About ─────────────────────────────────────────
@@ -149,12 +149,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               _settingsTile(
                 title: 'AGION',
                 subtitle: 'Version 1.0.0  ·  Personal Ascension OS',
-                leading: Icon(Icons.info_outline, color: SLColors.textMid, size: 20),
+                leading: const Icon(Icons.info_outline, color: SLColors.textMid, size: 20),
               ),
               _settingsTile(
                 title: 'AI Provider',
                 subtitle: 'Google Gemini 1.5 Flash (requires API key)',
-                leading: Icon(Icons.all_inclusive_rounded, color: SLColors.textMid, size: 20),
+                leading: const Icon(Icons.all_inclusive_rounded, color: SLColors.textMid, size: 20),
               ),
 
               // ── Danger Zone ───────────────────────────────────
@@ -222,7 +222,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
             ),
             if (onTap != null)
-              Icon(Icons.chevron_right, color: SLColors.textDim, size: 18),
+              const Icon(Icons.chevron_right, color: SLColors.textDim, size: 18),
           ],
         ),
       ),
@@ -255,7 +255,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             Switch(
               value: value,
               onChanged: onChanged,
-              activeColor: SLColors.glowCore,
+              activeThumbColor: SLColors.glowCore,
               activeTrackColor: SLColors.glowDim,
               inactiveTrackColor: SLColors.textDim,
             ),

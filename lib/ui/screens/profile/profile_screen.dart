@@ -64,9 +64,9 @@ class ProfileScreen extends ConsumerWidget {
     // HP = endurance proxy (streak × 150, max 9999)
     // MP = energy reserve (totalXP ÷ 10, max 9999)
     // Fatigue = inverse streak health (0 streak = 7 fatigue max)
-    final hpMax  = 9999;
+    const hpMax  = 9999;
     final hp     = math.min(player.streakDays * 150, hpMax);
-    final mpMax  = 9999;
+    const mpMax  = 9999;
     final mp     = math.min(player.totalXP ~/ 10, mpMax);
     final fatigue = math.max(0, 7 - player.streakDays).clamp(0, 100);
 
@@ -96,7 +96,7 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       GestureDetector(
                         onTap: () => context.pop(),
-                        child: Icon(Icons.arrow_back, color: SLColors.textMid, size: 20),
+                        child: const Icon(Icons.arrow_back, color: SLColors.textMid, size: 20),
                       ),
                       const SizedBox(width: 12),
                       Text('◈ HUNTER PROFILE', style: SLType.headline(size: 16)),
@@ -141,7 +141,7 @@ class ProfileScreen extends ConsumerWidget {
                                 type: SLBarType.hp,
                                 label: 'HP',
                                 valueText: '$hp/$hpMax',
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.add_circle_outline,
                                   size: 16,
                                   color: SLColors.hpBright,
@@ -153,7 +153,7 @@ class ProfileScreen extends ConsumerWidget {
                                 type: SLBarType.mp,
                                 label: 'MP',
                                 valueText: '$mp/$mpMax',
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.water_drop_outlined,
                                   size: 16,
                                   color: SLColors.mpBright,
@@ -165,13 +165,13 @@ class ProfileScreen extends ConsumerWidget {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.blur_on,
                                       size: 14,
                                       color: SLColors.textMid,
                                     ),
                                     const SizedBox(width: 6),
-                                    Text(
+                                    const Text(
                                       'FATIGUE: ',
                                       style: TextStyle(
                                         fontFamily: 'Rajdhani',
@@ -324,18 +324,18 @@ class _LevelJobRow extends StatelessWidget {
                   letterSpacing: 2.0,
                   shadows: [
                     Shadow(
-                      color: SLColors.glowCore.withOpacity(0.6),
+                      color: SLColors.glowCore.withValues(alpha: 0.6),
                       blurRadius: 20,
                     ),
                     Shadow(
-                      color: SLColors.glowCore.withOpacity(0.25),
+                      color: SLColors.glowCore.withValues(alpha: 0.25),
                       blurRadius: 40,
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 4),
-              Text(
+              const Text(
                 'LEVEL',
                 style: TextStyle(
                   fontFamily: 'Rajdhani',
@@ -390,7 +390,7 @@ class _JobLine extends StatelessWidget {
         children: [
           TextSpan(
             text: '$label: ',
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Rajdhani',
               fontSize: 12,
               color: SLColors.textMid,
@@ -399,7 +399,7 @@ class _JobLine extends StatelessWidget {
           ),
           TextSpan(
             text: value,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Rajdhani',
               fontSize: 14,
               fontWeight: FontWeight.w600,
@@ -428,7 +428,7 @@ class _InfoRow extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Rajdhani',
               fontSize: 11,
               color: SLColors.textMid,
@@ -437,7 +437,7 @@ class _InfoRow extends StatelessWidget {
           ),
           Text(
             value,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Orbitron',
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -471,14 +471,14 @@ class _StatBlock extends StatelessWidget {
             color: color,
             letterSpacing: 1.0,
             shadows: [
-              Shadow(color: color.withOpacity(0.7), blurRadius: 8),
+              Shadow(color: color.withValues(alpha: 0.7), blurRadius: 8),
             ],
           ),
         ),
         const SizedBox(height: 4),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'Rajdhani',
             fontSize: 9,
             color: SLColors.textMid,

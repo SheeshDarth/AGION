@@ -29,7 +29,7 @@ class WorkoutHubScreen extends ConsumerWidget {
                   children: [
                     GestureDetector(
                       onTap: () => context.pop(),
-                      child: Icon(Icons.arrow_back, color: SLColors.textMid, size: 20),
+                      child: const Icon(Icons.arrow_back, color: SLColors.textMid, size: 20),
                     ),
                     const SizedBox(width: 12),
                     SLText('◈ COMBAT RECORDS', style: SLType.headline(size: 18, color: SLColors.textBright)),

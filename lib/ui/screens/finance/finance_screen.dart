@@ -57,7 +57,7 @@ class _FinanceScreenState extends ConsumerState<FinanceScreen> {
                   child: Row(
                     children: [
                       GestureDetector(onTap: () => context.pop(),
-                        child: Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
+                        child: const Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
                       const SizedBox(width: 12),
                       SLText('◈ FINANCE TRACKER', style: SLType.headline(size: 18)),
                     ],
@@ -110,7 +110,7 @@ class _FinanceScreenState extends ConsumerState<FinanceScreen> {
                           controller: _amountCtrl,
                           keyboardType: TextInputType.number,
                           style: SLType.hudNum(size: 22, color: SLColors.textBright),
-                          decoration: InputDecoration(hintText: '0.00', prefixText: '₹ '),
+                          decoration: const InputDecoration(hintText: '0.00', prefixText: '₹ '),
                         ),
                         const SizedBox(height: 8),
                         DropdownButtonFormField<String>(
@@ -126,7 +126,7 @@ class _FinanceScreenState extends ConsumerState<FinanceScreen> {
                         TextField(
                           controller: _noteCtrl,
                           style: SLType.body(color: SLColors.textBright),
-                          decoration: InputDecoration(hintText: 'NOTE (OPTIONAL)'),
+                          decoration: const InputDecoration(hintText: 'NOTE (OPTIONAL)'),
                         ),
                         const SizedBox(height: 12),
                         SystemButton(label: '◈ LOG ENTRY', onTap: _add, width: double.infinity),
@@ -173,7 +173,7 @@ class _FinanceScreenState extends ConsumerState<FinanceScreen> {
                   ),
                 ),
               ),
-              SliverPadding(padding: const EdgeInsets.only(bottom: 24)),
+              const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
             ],
           ),
         ),

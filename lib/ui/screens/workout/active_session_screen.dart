@@ -67,13 +67,13 @@ class _ActiveSessionScreenState extends ConsumerState<ActiveSessionScreen> {
   Future<void> _finish() async {
     final session = ref.read(activeSessionProvider.notifier).finish(_elapsed.inMinutes);
     if (session == null) { context.pop(); return; }
+    // Capture size before async gap to avoid BuildContext across async boundary
+    final size = MediaQuery.of(context).size;
     await ref.read(workoutProvider.notifier).save(session);
-    final center = Offset(
-      MediaQuery.of(context).size.width / 2,
-      MediaQuery.of(context).size.height / 3,
-    );
+    if (!mounted) return;
+    final center = Offset(size.width / 2, size.height / 3);
     ref.read(playerProvider.notifier).addXP(session.xpEarned, 'workout', center);
-    if (mounted) context.pushReplacement('/workout/summary');
+    context.pushReplacement('/workout/summary');
   }
 
   @override
@@ -257,7 +257,7 @@ class _SetRowState extends State<_SetRow> {
     return Container(
       margin: const EdgeInsets.only(top: 6),
       decoration: done ? BoxDecoration(
-        color: SLColors.success.withOpacity(0.06),
+        color: SLColors.success.withValues(alpha: 0.06),
       ) : null,
       child: Row(
         children: [
@@ -329,7 +329,7 @@ class _ExercisePickerState extends State<_ExercisePicker> {
             TextField(
               onChanged: (v) => setState(() => _filter = v),
               style: SLType.body(color: SLColors.textBright),
-              decoration: InputDecoration(hintText: 'SEARCH...'),
+              decoration: const InputDecoration(hintText: 'SEARCH...'),
             ),
             const SizedBox(height: 8),
             Expanded(

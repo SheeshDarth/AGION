@@ -15,12 +15,12 @@ import 'sl_colors.dart';
 // ═══════════════════════════════════════════════════════════════
 
 List<Shadow> _orbitronGlow(Color c) => [
-  Shadow(color: c.withOpacity(0.70), blurRadius: 8),
-  Shadow(color: c.withOpacity(0.35), blurRadius: 18),
+  Shadow(color: c.withValues(alpha: 0.70), blurRadius: 8),
+  Shadow(color: c.withValues(alpha: 0.35), blurRadius: 18),
 ];
 
 List<Shadow> _softGlow(Color c) => [
-  Shadow(color: c.withOpacity(0.50), blurRadius: 6),
+  Shadow(color: c.withValues(alpha: 0.50), blurRadius: 6),
 ];
 
 abstract class SLType {

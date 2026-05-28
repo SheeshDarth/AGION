@@ -135,7 +135,7 @@ class _PlannerScreenState extends ConsumerState<PlannerScreen> {
                     ),
                   ),
                 ),
-              SliverPadding(padding: const EdgeInsets.only(bottom: 24)),
+              const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
             ],
           ),
         ),

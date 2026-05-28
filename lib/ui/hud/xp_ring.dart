@@ -132,14 +132,14 @@ class _XPRingPainter extends CustomPainter {
       Rect.fromCircle(center: center, radius: radius),
       -math.pi / 2, 2 * math.pi, false,
       Paint()
-        ..color = SLColors.textDim.withOpacity(0.3)
+        ..color = SLColors.textDim.withValues(alpha: 0.3)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3,
     );
 
     // Tick marks
     final tickPaint = Paint()
-      ..color = SLColors.glowDim.withOpacity(0.3)
+      ..color = SLColors.glowDim.withValues(alpha: 0.3)
       ..strokeWidth = 1.5;
     for (int i = 0; i < 12; i++) {
       final angle = -math.pi / 2 + (i / 12) * 2 * math.pi;
@@ -181,18 +181,18 @@ class _XPRingPainter extends CustomPainter {
         center.dy + radius * math.sin(tipAngle),
       );
       canvas.drawCircle(tip, 4,
-          Paint()..color = SLColors.glowCore.withOpacity(0.9)
+          Paint()..color = SLColors.glowCore.withValues(alpha: 0.9)
             ..maskFilter = const MaskFilter.blur(BlurStyle.outer, 6));
     }
 
     // Rotating scan line
     final scanAngle = -math.pi / 2 + scanProgress * 2 * math.pi;
-    final scanSweep = math.pi * 0.3;
+    const scanSweep = math.pi * 0.3;
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       scanAngle, scanSweep, false,
       Paint()
-        ..color = SLColors.glowCore.withOpacity(0.12)
+        ..color = SLColors.glowCore.withValues(alpha: 0.12)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 8,
     );
@@ -215,8 +215,8 @@ class _RankDiamondBadge extends StatelessWidget {
       width: size * 1.6,
       height: size,
       decoration: BoxDecoration(
-        border: Border.all(color: color.withOpacity(0.7), width: 1),
-        color: color.withOpacity(0.08),
+        border: Border.all(color: color.withValues(alpha: 0.7), width: 1),
+        color: color.withValues(alpha: 0.08),
       ),
       child: Center(
         child: SLText(

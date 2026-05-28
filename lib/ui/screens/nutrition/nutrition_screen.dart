@@ -60,7 +60,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen> {
                   child: Row(
                     children: [
                       GestureDetector(onTap: () => context.pop(),
-                        child: Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
+                        child: const Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
                       const SizedBox(width: 12),
                       SLText('◈ FUEL LOG', style: SLType.headline(size: 18)),
                     ],
@@ -140,7 +140,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen> {
                         child: TextField(
                           controller: _searchCtrl,
                           style: SLType.body(color: SLColors.textBright),
-                          decoration: InputDecoration(hintText: 'SEARCH FOOD...'),
+                          decoration: const InputDecoration(hintText: 'SEARCH FOOD...'),
                           onSubmitted: (_) => _search(),
                         ),
                       ),
@@ -186,7 +186,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen> {
                     ),
                   ),
                 ),
-              SliverPadding(padding: const EdgeInsets.only(bottom: 24)),
+              const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
             ],
           ),
         ),

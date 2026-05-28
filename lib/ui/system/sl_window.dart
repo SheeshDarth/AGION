@@ -102,9 +102,9 @@ class SLWindow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
             decoration: BoxDecoration(
-              color: _accent.withOpacity(0.08),
+              color: _accent.withValues(alpha: 0.08),
               border: Border(
-                bottom: BorderSide(color: _accent.withOpacity(0.3), width: 1),
+                bottom: BorderSide(color: _accent.withValues(alpha: 0.3), width: 1),
               ),
             ),
             child: Row(children: [
@@ -116,7 +116,7 @@ class SLWindow extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: _accent,
                   letterSpacing: 2.5,
-                  shadows: [Shadow(color: _accent.withOpacity(0.7), blurRadius: 6)],
+                  shadows: [Shadow(color: _accent.withValues(alpha: 0.7), blurRadius: 6)],
                 ),
               ),
               const Spacer(),
@@ -147,7 +147,7 @@ class SLWindow extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: SLColors.textBright,
                     letterSpacing: 2.0,
-                    shadows: [Shadow(color: _accent.withOpacity(0.5), blurRadius: 8)],
+                    shadows: [Shadow(color: _accent.withValues(alpha: 0.5), blurRadius: 8)],
                   ),
                 ),
                 if (config.subtitle != null) ...[
@@ -166,7 +166,7 @@ class SLWindow extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     config.body!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Rajdhani',
                       fontSize: 14,
                       color: SLColors.textMid,
@@ -181,9 +181,9 @@ class SLWindow extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: SLColors.xpDark.withOpacity(0.3),
+                      color: SLColors.xpDark.withValues(alpha: 0.3),
                       border: Border.all(
-                        color: SLColors.xpBright.withOpacity(0.5),
+                        color: SLColors.xpBright.withValues(alpha: 0.5),
                         width: 1,
                       ),
                     ),
@@ -196,7 +196,7 @@ class SLWindow extends StatelessWidget {
                         color: SLColors.xpBright,
                         letterSpacing: 2.0,
                         shadows: [
-                          Shadow(color: SLColors.xpBright.withOpacity(0.6), blurRadius: 8),
+                          Shadow(color: SLColors.xpBright.withValues(alpha: 0.6), blurRadius: 8),
                         ],
                       ),
                     ),
@@ -250,9 +250,9 @@ class _WinButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          border: Border.all(color: color.withOpacity(0.6), width: 1),
+          border: Border.all(color: color.withValues(alpha: 0.6), width: 1),
           boxShadow: [
-            BoxShadow(color: color.withOpacity(0.12), blurRadius: 8),
+            BoxShadow(color: color.withValues(alpha: 0.12), blurRadius: 8),
           ],
         ),
         alignment: Alignment.center,
@@ -309,7 +309,7 @@ class _SLWindowOverlayState extends State<_SLWindowOverlay>
     return GestureDetector(
       onTap: widget.config.primaryLabel == null ? _dismiss : null,
       child: Material(
-        color: Colors.black.withOpacity(0.55),
+        color: Colors.black.withValues(alpha: 0.55),
         child: Center(
           child: FadeTransition(
             opacity: _opacity,

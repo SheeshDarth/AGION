@@ -69,7 +69,7 @@ class _AiCoachScreenState extends ConsumerState<AiCoachScreen> {
                 child: Row(
                   children: [
                     GestureDetector(onTap: () => context.pop(),
-                      child: Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
+                      child: const Icon(Icons.arrow_back, color: SLColors.textMid, size: 20)),
                     const SizedBox(width: 12),
                     SLText('◈ AI ASCENSION GUIDE', style: SLType.headline(size: 16)),
                   ],
@@ -112,7 +112,7 @@ class _AiCoachScreenState extends ConsumerState<AiCoachScreen> {
                             child: SLText(
                               '◈ SYSTEM: ANALYZING...',
                               style: SLType.body(size: 12, color: SLColors.textMid),
-                            ).animate(onPlay: (c) => c.repeat()).shimmer(duration: 1000.ms, color: SLColors.glowCore.withOpacity(0.2)),
+                            ).animate(onPlay: (c) => c.repeat()).shimmer(duration: 1000.ms, color: SLColors.glowCore.withValues(alpha: 0.2)),
                           ),
                         ),
                       );
@@ -146,7 +146,7 @@ class _AiCoachScreenState extends ConsumerState<AiCoachScreen> {
                         controller: _ctrl,
                         style: SLType.body(color: SLColors.textBright),
                         maxLines: null,
-                        decoration: InputDecoration(hintText: 'QUERY THE SYSTEM...'),
+                        decoration: const InputDecoration(hintText: 'QUERY THE SYSTEM...'),
                         onSubmitted: (_) => _send(),
                       ),
                     ),
