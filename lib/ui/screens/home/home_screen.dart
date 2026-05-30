@@ -137,14 +137,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: SliverToBoxAdapter(
-                  child: Row(
-                    children: [
-                      Expanded(child: StatPanel(label: 'STR', value: XPEngine.strength(0), color: SLColors.rankS)),
-                      const SizedBox(width: 8),
-                      Expanded(child: StatPanel(label: 'AGI', value: XPEngine.agility(0), color: SLColors.rankD)),
-                      const SizedBox(width: 8),
-                      Expanded(child: StatPanel(label: 'INT', value: XPEngine.intelligence(0), color: SLColors.rankC)),
-                    ],
+                  child: SizedBox(
+                    height: 72, // fixed height — stays compact on any screen width
+                    child: Row(
+                      children: [
+                        Expanded(child: StatPanel(label: 'STR', value: XPEngine.strength(0), color: SLColors.rankS)),
+                        const SizedBox(width: 8),
+                        Expanded(child: StatPanel(label: 'AGI', value: XPEngine.agility(0), color: SLColors.rankD)),
+                        const SizedBox(width: 8),
+                        Expanded(child: StatPanel(label: 'INT', value: XPEngine.intelligence(0), color: SLColors.rankC)),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -212,7 +215,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     crossAxisCount: 3,
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
-                    childAspectRatio: 0.9,
+                    // Fixed pixel height — tiles are the same size on every screen width.
+                    // childAspectRatio was removed: it tied height to width, making tiles
+                    // 500px+ tall on desktop/tablet while being correct only on narrow phones.
+                    mainAxisExtent: 110,
                   ),
                   delegate: SliverChildListDelegate([
                     _QuickTile(icon: Icons.bolt, label: 'WORKOUT', xp: 50, color: SLColors.rankS,

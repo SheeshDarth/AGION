@@ -335,13 +335,18 @@ class _PageGoals extends StatelessWidget {
           const SizedBox(height: 8),
           SLText('SELECT ALL THAT APPLY', style: SLType.sysLabel(color: SLColors.textMid), align: TextAlign.center),
           const SizedBox(height: 24),
-          Expanded(
-            child: GridView.count(
+          // Fixed-height goal pills — same size on every screen width
+          GridView.custom(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
-              childAspectRatio: 2.2,
-              children: allGoals.map((g) {
+              mainAxisExtent: 64, // fixed px — no aspect ratio scaling
+            ),
+            childrenDelegate: SliverChildListDelegate(
+              allGoals.map((g) {
                 final selected = goals.contains(g);
                 return SystemPanel(
                   glowColor: selected ? SLColors.glowCore : SLColors.textDim,
