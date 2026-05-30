@@ -136,7 +136,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 title: 'Privacy Policy',
                 subtitle: 'How AGION handles your data',
                 leading: const Icon(Icons.privacy_tip_outlined, color: SLColors.textMid, size: 20),
-                onTap: () => _showPrivacyPolicy(),
+                onTap: () => context.push('/legal/privacy'),
+              ),
+              _settingsTile(
+                title: 'Terms of Service',
+                subtitle: 'Usage terms for AGION',
+                leading: const Icon(Icons.gavel_outlined, color: SLColors.textMid, size: 20),
+                onTap: () => context.push('/legal/terms'),
               ),
               _settingsTile(
                 title: 'All Data Stored Locally',
@@ -265,72 +271,4 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     ),
   );
 
-  void _showPrivacyPolicy() {
-    showDialog(
-      context: context,
-      builder: (_) => Dialog(
-        backgroundColor: SLColors.panelMid,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SLText('AGION PRIVACY POLICY', style: SLType.headline(size: 16, color: SLColors.glowCore)),
-              const SizedBox(height: 16),
-              _privacySection('DATA COLLECTED', [
-                'Health metrics you enter (weight, height, workouts)',
-                'Nutrition logs you create',
-                'Financial entries you log',
-                'App usage data stored locally on your device',
-              ]),
-              _privacySection('DATA STORAGE', [
-                'All personal data is stored locally on your device only',
-                'No account required — no cloud sync',
-                'Data is not transmitted to AGION servers',
-              ]),
-              _privacySection('THIRD-PARTY SERVICES', [
-                'Google Gemini AI: AI chat messages are sent to Google\'s API when you use the AI Coach feature. Subject to Google\'s Privacy Policy.',
-                'Open Food Facts: Food search queries are sent to openfoodfacts.org (public database).',
-                'wger Exercise API: Exercise search queries are sent to wger.de (public database).',
-              ]),
-              _privacySection('YOUR RIGHTS', [
-                'Delete all your data at any time via Settings → Erase All Data',
-                'The app works fully offline (AI features require internet)',
-              ]),
-              _privacySection('CONTACT', [
-                'For privacy inquiries, contact the developer.',
-              ]),
-              const SizedBox(height: 16),
-              SystemButton(
-                label: 'CLOSE',
-                onTap: () => Navigator.pop(context),
-                width: double.infinity,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _privacySection(String title, List<String> items) => Padding(
-    padding: const EdgeInsets.only(bottom: 16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SLText(title, style: SLType.sysLabel(size: 9, color: SLColors.textMid)),
-        const SizedBox(height: 8),
-        ...items.map((item) => Padding(
-          padding: const EdgeInsets.only(bottom: 4),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SLText('◈ ', style: SLType.body(size: 12, color: SLColors.glowDim)),
-              Expanded(child: SLText(item, style: SLType.body(size: 12, color: SLColors.textMid))),
-            ],
-          ),
-        )),
-      ],
-    ),
-  );
 }

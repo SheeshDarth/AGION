@@ -416,7 +416,9 @@ class _PageActivity extends StatelessWidget {
 
 // ─── Page 5: Confirm ─────────────────────────────────────────────────────
 
-class _PageConfirm extends StatelessWidget {
+// ─── Page 5: Confirm (Stateful — holds legal consent state) ──────────────────
+
+class _PageConfirm extends StatefulWidget {
   final String name, gender, activity;
   final int age;
   final double height, weight;
@@ -430,36 +432,80 @@ class _PageConfirm extends StatelessWidget {
   });
 
   @override
+  State<_PageConfirm> createState() => _PageConfirmState();
+}
+
+class _PageConfirmState extends State<_PageConfirm> {
+  bool _acceptedPrivacy = false;
+  bool _acceptedTerms   = false;
+
+  bool get _canBegin => _acceptedPrivacy && _acceptedTerms;
+
+  @override
   Widget build(BuildContext context) {
-    final bmr = BodyEngine.bmr(weightKg: weight, heightCm: height, age: age, gender: gender);
-    final tdee = BodyEngine.tdee(bmr: bmr, activityLevel: activity);
-    final macros = BodyEngine.macroTargets(tdee: tdee, goals: goals.toList());
+    final bmr    = BodyEngine.bmr(weightKg: widget.weight, heightCm: widget.height,
+                                  age: widget.age, gender: widget.gender);
+    final tdee   = BodyEngine.tdee(bmr: bmr, activityLevel: widget.activity);
+    final macros = BodyEngine.macroTargets(tdee: tdee, goals: widget.goals.toList());
 
     return Padding(
       padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SLText('SYSTEM CALIBRATION COMPLETE',
-            style: SLType.headline(size: 20), align: TextAlign.center),
-          const SizedBox(height: 24),
-          SystemPanel(
-            child: Column(
-              children: [
-                _row('HUNTER', name.isEmpty ? 'HUNTER' : name.toUpperCase()),
-                _row('BIOMETRICS', '${height}cm • ${weight}kg • $age y'),
-                _row('BMR', '${bmr.round()} kcal'),
-                _row('TDEE', '${tdee.round()} kcal'),
-                _row('DAILY TARGET', '${macros['calories']!.round()} kcal'),
-                _row('PROTEIN', '${macros['proteinG']!.round()}g'),
-                _row('CARBS', '${macros['carbsG']!.round()}g'),
-                _row('FAT', '${macros['fatG']!.round()}g'),
-              ],
+      // SingleChildScrollView prevents overflow on small screens with the legal rows
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            SLText('SYSTEM CALIBRATION COMPLETE',
+              style: SLType.headline(size: 20), align: TextAlign.center),
+            const SizedBox(height: 24),
+
+            // ── Stats panel ──────────────────────────────────────
+            SystemPanel(
+              child: Column(
+                children: [
+                  _row('HUNTER', widget.name.isEmpty ? 'HUNTER' : widget.name.toUpperCase()),
+                  _row('BIOMETRICS', '${widget.height}cm • ${widget.weight}kg • ${widget.age} y'),
+                  _row('BMR', '${bmr.round()} kcal'),
+                  _row('TDEE', '${tdee.round()} kcal'),
+                  _row('DAILY TARGET', '${macros['calories']!.round()} kcal'),
+                  _row('PROTEIN', '${macros['proteinG']!.round()}g'),
+                  _row('CARBS', '${macros['carbsG']!.round()}g'),
+                  _row('FAT', '${macros['fatG']!.round()}g'),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 32),
-          SystemButton(label: 'BEGIN ASCENSION', variant: SystemButtonVariant.boss, onTap: onBegin, width: double.infinity),
-        ],
+
+            const SizedBox(height: 28),
+
+            // ── Legal consent checkboxes ─────────────────────────
+            _LegalCheckbox(
+              checked: _acceptedPrivacy,
+              onChanged: (v) => setState(() => _acceptedPrivacy = v),
+              label: 'I have read and accept the ',
+              linkText: 'Privacy Policy',
+              onLinkTap: () => context.push('/legal/privacy'),
+            ),
+            const SizedBox(height: 12),
+            _LegalCheckbox(
+              checked: _acceptedTerms,
+              onChanged: (v) => setState(() => _acceptedTerms = v),
+              label: 'I agree to the ',
+              linkText: 'Terms of Service',
+              onLinkTap: () => context.push('/legal/terms'),
+            ),
+
+            const SizedBox(height: 24),
+
+            // ── BEGIN ASCENSION — disabled until both checked ────
+            SystemButton(
+              label: 'BEGIN ASCENSION',
+              variant: _canBegin ? SystemButtonVariant.boss : SystemButtonVariant.ghost,
+              onTap: _canBegin ? widget.onBegin : null,
+              color: _canBegin ? null : SLColors.textDim,
+              width: double.infinity,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -472,6 +518,83 @@ class _PageConfirm extends StatelessWidget {
         children: [
           SLText(label, style: SLType.sysLabel(size: 9, color: SLColors.textMid)),
           SLText(value, style: SLType.body(size: 13, color: SLColors.textBright)),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── SL-styled legal consent checkbox ────────────────────────────────────────
+
+class _LegalCheckbox extends StatelessWidget {
+  final bool checked;
+  final ValueChanged<bool> onChanged;
+  final String label;      // e.g. "I accept the "
+  final String linkText;   // e.g. "Privacy Policy"
+  final VoidCallback onLinkTap;
+
+  const _LegalCheckbox({
+    required this.checked,
+    required this.onChanged,
+    required this.label,
+    required this.linkText,
+    required this.onLinkTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onChanged(!checked),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Square SL-styled checkbox (NO rounded corners — design rule)
+          Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              color: checked
+                  ? SLColors.glowCore.withValues(alpha: 0.15)
+                  : Colors.transparent,
+              border: Border.all(
+                color: checked ? SLColors.glowCore : SLColors.textDim,
+                width: 1.5,
+              ),
+              borderRadius: BorderRadius.zero,
+              boxShadow: checked
+                  ? [BoxShadow(
+                      color: SLColors.glowCore.withValues(alpha: 0.40),
+                      blurRadius: 8,
+                      spreadRadius: -2,
+                    )]
+                  : null,
+            ),
+            child: checked
+                ? const Icon(Icons.check, size: 13, color: SLColors.glowCore)
+                : null,
+          ),
+          const SizedBox(width: 12),
+          // Label text + tappable link
+          Expanded(
+            child: Row(
+              children: [
+                SLText(label,
+                    style: SLType.body(size: 12, color: SLColors.textMid)),
+                GestureDetector(
+                  onTap: () {
+                    // Navigate without toggling checkbox
+                    onLinkTap();
+                  },
+                  // Absorb the tap so it doesn't bubble up to the outer GestureDetector
+                  behavior: HitTestBehavior.opaque,
+                  child: SLText(
+                    linkText,
+                    style: SLType.body(size: 12, color: SLColors.glowCore),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
